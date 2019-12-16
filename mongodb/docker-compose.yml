@@ -2,8 +2,8 @@ version: '3.5'
 
 services: 
   mongodb: 
-    image: mongo
-    container_name: 'mongodb'
+    image: mongo:4.2.2
+    container_name: 'my-mongodb'
     ports: 
       - '27017:27017'
     environment: 
