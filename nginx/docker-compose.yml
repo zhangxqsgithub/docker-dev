@@ -1,0 +1,13 @@
+version: '3.5'
+
+services: 
+  nginx:
+    build: ./image-build
+    container_name: 'nginx'
+    ports: 
+      - 80:80
+    volumes: 
+      - ./data/html/:/usr/share/nginx/html
+      - ./conf/nginx.conf:/etc/nginx/nginx.conf
+      - ./conf/conf.d/:/etc/nginx/conf.d/
+    restart: always
