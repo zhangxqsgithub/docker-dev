@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+    redis:
+        image: registry.cn-hangzhou.aliyuncs.com/open_zail/keepalived:2.0.19
+        container_name: "keepalived"
+        volumes:
+            - ./config:/etc/keepalived:z
+        restart: on-failure
+        command: [ "/usr/local/keepalived/sbin/keepalived" ]
+        logging:
+            driver: 'json-file'
+            options:
+                max-size: '30m'
+                max-file: '1'
