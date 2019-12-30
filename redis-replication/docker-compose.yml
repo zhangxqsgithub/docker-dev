@@ -1,0 +1,44 @@
+version: '3'
+
+networks:
+    &network network:
+        driver: bridge
+        ipam:
+            driver: default
+            config:
+                - subnet: 172.16.238.0/16
+
+services:
+    &master redis-master:
+        image: &image registry.cn-hangzhou.aliyuncs.com/open_zail/redis:5.0
+        container_name: "redis-master"
+        ports:
+            - "6379:6379"
+        volumes:
+            - ./data:/data:z
+            - ./config/redis.conf:/usr/local/etc/redis/redis.conf
+        restart: on-failure
+        command: [ "redis-server", "/usr/local/etc/redis/redis.conf" ]
+        networks:
+            *network :
+                ipv4_address: 172.16.238.10
+    redis-slave-1:
+        image: *image
+        container_name: "redis-slave-1"
+        restart: on-failure
+        command: [ "redis-server","--slaveof","172.16.238.10", "6379","--slave-read-only","yes"]
+        networks:
+            *network :
+                ipv4_address: 172.16.238.11
+        depends_on:
+            - *master
+    redis-slave-2:
+        image: *image
+        container_name: "redis-slave-2"
+        restart: on-failure
+        command: [ "redis-server","--slaveof","172.16.238.10", "6379","--slave-read-only","yes"]
+        networks:
+            *network :
+                ipv4_address: 172.16.238.12
+        depends_on:
+            - *master
