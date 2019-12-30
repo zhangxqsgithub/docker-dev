@@ -25,6 +25,8 @@ services:
     redis-slave-1:
         image: *image
         container_name: "redis-slave-1"
+        ports: 
+            - "6380:6379"
         restart: on-failure
         command: [ "redis-server","--slaveof","172.16.238.10", "6379","--slave-read-only","yes"]
         networks:
@@ -35,6 +37,8 @@ services:
     redis-slave-2:
         image: *image
         container_name: "redis-slave-2"
+        ports: 
+            - "6381:6379"
         restart: on-failure
         command: [ "redis-server","--slaveof","172.16.238.10", "6379","--slave-read-only","yes"]
         networks:
