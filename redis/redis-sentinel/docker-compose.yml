@@ -1,0 +1,94 @@
+version: "3"
+
+
+networks: 
+    &network network:
+        driver: bridge
+        ipam: 
+            driver: default
+            config: 
+                - subnet: 172.16.238.0/16
+
+services: 
+    &master redis-master:
+        &image image: registry.cn-hangzhou.aliyuncs.com/open_zail/redis:5.0
+        container_name: "redis-master"
+        ports: 
+            - 6379:6379
+        volumes: 
+            - ./config/redis.conf:/usr/local/etc/redis/redis.conf
+            - ./data:/data:z
+        restart: on-failure
+        command: [ "redis-server", "/usr/local/etc/redis/redis.conf" ]
+        networks: 
+            *network:
+                ipv4_address: 172.16.238.10
+    redis-slave-1:
+        image: *image
+        container_name: "redis-slave-1"
+        ports: 
+            - "6380:6379"
+        restart: on-failure
+        command: [ "redis-server","--slaveof", "172.16.238.10", "6379", "--slave-read-only", "yes" ]
+        networks:
+            *network :
+                ipv4_address: 172.16.238.11
+        depends_on:
+            - *master
+    redis-slave-2:
+        image: *image
+        container_name: "redis-slave-2"
+        ports: 
+            - "6381:6379"
+        restart: on-failure
+        command: [ "redis-server", "--slaveof", "172.16.238.10", "6379", "--slave-read-only", "yes" ]
+        networks:
+            *network :
+                ipv4_address: 172.16.238.12
+        depends_on:
+            - *master
+    redis-sentinel-1:
+        image: *image
+        container_name: "redis-sentinel-1"
+        ports: 
+            - "26379:26379"
+        volumes: 
+            - ./config/sentinel-1.conf:/usr/local/etc/redis/sentinel.conf
+            - ./log:/usr/local/var/log/redis/:z
+        restart: on-failure
+        command: [ "redis-sentinel", "/usr/local/etc/redis/sentinel.conf" ]
+        networks: 
+            *network:
+                ipv4_address: 172.16.238.20
+        depends_on: 
+            - *master
+    redis-sentinel-2:
+        image: *image
+        container_name: "redis-sentinel-2"
+        ports: 
+            - "36379:26379"
+        volumes: 
+            - ./config/sentinel-2.conf:/usr/local/etc/redis/sentinel.conf
+            - ./log:/usr/local/var/log/redis/:z
+        restart: on-failure
+        command: [ "redis-sentinel", "/usr/local/etc/redis/sentinel.conf" ]
+        networks: 
+            *network:
+                ipv4_address: 172.16.238.21
+        depends_on: 
+            - *master
+    redis-sentinel-3:
+        image: *image
+        container_name: "redis-sentinel-3"
+        ports: 
+            - "46379:26379"
+        volumes: 
+            - ./config/sentinel-3.conf:/usr/local/etc/redis/sentinel.conf
+            - ./log:/usr/local/var/log/redis/:z
+        restart: on-failure
+        command: [ "redis-sentinel", "/usr/local/etc/redis/sentinel.conf" ]
+        networks: 
+            *network:
+                ipv4_address: 172.16.238.22
+        depends_on: 
+            - *master

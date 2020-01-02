@@ -10,7 +10,7 @@ networks:
 
 services:
     &master redis-master:
-        image: &image registry.cn-hangzhou.aliyuncs.com/open_zail/redis:5.0
+        &image image: registry.cn-hangzhou.aliyuncs.com/open_zail/redis:5.0
         container_name: "redis-master"
         ports:
             - "6379:6379"
