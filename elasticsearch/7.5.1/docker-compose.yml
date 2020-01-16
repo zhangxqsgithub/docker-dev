@@ -2,7 +2,7 @@ version: '3'
 
 services:
   es:
-    image: registry.cn-hangzhou.aliyuncs.com/open_zail/elasticsearch:7.5.1
+    image: registry.cn-hangzhou.aliyuncs.com/open_zail/elasticsearch-ik:7.5.1
     container_name: es
     ulimits:
       memlock:

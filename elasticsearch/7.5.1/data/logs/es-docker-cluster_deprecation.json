@@ -1,0 +1,1 @@
+{"type": "deprecation", "timestamp": "2020-01-15T06:52:43,615Z", "level": "WARN", "component": "o.e.d.r.a.s.RestSearchAction", "cluster.name": "es-docker-cluster", "node.name": "es01", "message": "[types removal] Specifying types in search requests is deprecated.", "cluster.uuid": "qE-_TBCkS2ScNf98bq9Afg", "node.id": "Ljln9nyBShiOYsxjaEgCJQ"  }
