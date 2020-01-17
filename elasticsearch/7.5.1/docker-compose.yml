@@ -10,6 +10,7 @@ services:
         hard: -1
     volumes:
       - ./config:/usr/share/elasticsearch/config
+      - ./ikconfig:/usr/share/elasticsearch/plugins/ik/config
       - ./data:/usr/share/elasticsearch/data
     ports:
       - 9200:9200
