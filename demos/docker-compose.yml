@@ -1,0 +1,14 @@
+## docker-compose 文件版本
+version: "3.9"
+
+services: 
+    nginx_server:
+        image: nginx:latest
+        ports: 
+            - 80:80
+        ## 文件映射设置 https://docs.docker.com/compose/compose-file/compose-file-v3/#short-syntax-3
+        ## ./data/html/            本地文件
+        ## /usr/share/nginx/html   容器中的文件
+        ## rw                      read-write
+        volumes: 
+            - ./data/html/:/usr/share/nginx/html/:rw
